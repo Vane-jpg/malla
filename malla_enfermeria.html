@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Curricular Enfermería</title>
+  <style>
+    body { font-family: sans-serif; background: #fdfdfd; margin: 20px; }
+    .ciclo-inicial { background-color: #fce4ec; }
+    .ciclo-intermedio { background-color: #e0f7fa; }
+    .ciclo-final { background-color: #fff9c4; }
+    .semestre { border: 1px solid #ccc; padding: 10px; margin: 10px 0; border-radius: 10px; }
+    .asignatura { margin-left: 15px; }
+    input { padding: 5px; width: 100%; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular de Enfermería</h1>
+  <input type="text" id="buscador" placeholder="Buscar asignatura...">
+
+  <div id="contenedor"></div>
+
+  <script>
+    const malla = {
+      "V SEMESTRE": [
+        { nombre: "Bioestadística", horas: "36", tipo: "T", prerequisitos: "14" },
+        { nombre: "Enfermería médico-quirúrgico I", horas: "108", tipo: "T(36)-P(72)", prerequisitos: "17,19,25" },
+        { nombre: "Enfermería en salud familiar y comunitaria II", horas: "108", tipo: "T(36)-P(72)", prerequisitos: "24" },
+        { nombre: "Gestión del cuidado del niño y adolescente I", horas: "72", tipo: "T(36)-P(36)", prerequisitos: "19,23,25" },
+        { nombre: "Alimentación y nutrición", horas: "36", tipo: "T", prerequisitos: "22,23" },
+        { nombre: "Gestión del cuidado geriátrico I", horas: "72", tipo: "T(54)-P(18)", prerequisitos: "29,30" },
+        { nombre: "Desarrollo Humano Sostenible", horas: "64", tipo: "T", prerequisitos: "No tiene" }
+      ],
+      "VI SEMESTRE": [
+        { nombre: "Metodología de la investigación", horas: "36", tipo: "T", prerequisitos: "28" },
+        { nombre: "Epidemiología e IAAS", horas: "90", tipo: "T", prerequisitos: "28 y 30" },
+        { nombre: "Enfermería médico-quirúrgico II", horas: "108", tipo: "T(36)-P(72)", prerequisitos: "29" },
+        { nombre: "Gestión del cuidado del niño y adolescente II", horas: "72", tipo: "T(36)-P(36)", prerequisitos: "31" },
+        { nombre: "Gestión del cuidado geriátrico II", horas: "72", tipo: "T(54)-P(18)", prerequisitos: "38" },
+        { nombre: "Optativo II", horas: "64", tipo: "T", prerequisitos: "No tiene" }
+      ],
+      "VII SEMESTRE": [
+        { nombre: "Seminario de grado I", horas: "36", tipo: "T", prerequisitos: "34" },
+        { nombre: "Enfermería en urgencia adulto y niño", horas: "108", tipo: "T(36)-P(72)", prerequisitos: "36,37" },
+        { nombre: "Salud ocupacional", horas: "36", tipo: "T", prerequisitos: "35" },
+        { nombre: "Gestión y administración en Enfermería", horas: "72", tipo: "T", prerequisitos: "34" },
+        { nombre: "Enfermería integral II", horas: "72", tipo: "P (laboratorio)", prerequisitos: "41,44" },
+        { nombre: "Optativo III", horas: "64", tipo: "T", prerequisitos: "No tiene" }
+      ],
+      "VIII SEMESTRE": [
+        { nombre: "Seminario de grado II", horas: "36", tipo: "T", prerequisitos: "40" },
+        { nombre: "Enfermería en Salud Mental y psiquiatría", horas: "108", tipo: "T(36)-P(72)", prerequisitos: "21,36" },
+        { nombre: "Salud digital", horas: "36", tipo: "T", prerequisitos: "43" },
+        { nombre: "Gerencia en Enfermería", horas: "72", tipo: "T", prerequisitos: "43" },
+        { nombre: "Ética Profesional", horas: "64", tipo: "T", prerequisitos: "No tiene" }
+      ],
+      "IX SEMESTRE": [
+        { nombre: "Internado en Enfermería I", horas: "590", tipo: "P", prerequisitos: "1º al 8º semestre aprobado" }
+      ],
+      "X SEMESTRE": [
+        { nombre: "Internado en Enfermería II", horas: "590", tipo: "P", prerequisitos: "1º al 8º semestre aprobado" }
+      ]
+    };
+
+    const ciclo = {
+      "V SEMESTRE": "intermedio",
+      "VI SEMESTRE": "intermedio",
+      "VII SEMESTRE": "final",
+      "VIII SEMESTRE": "final",
+      "IX SEMESTRE": "final",
+      "X SEMESTRE": "final"
+    };
+
+    const contenedor = document.getElementById('contenedor');
+
+    function renderMalla(filtro = '') {
+      contenedor.innerHTML = '';
+      for (const [semestre, ramos] of Object.entries(malla)) {
+        const div = document.createElement('div');
+        div.className = `semestre ciclo-${ciclo[semestre] || 'inicial'}`;
+        div.innerHTML = `<h2>${semestre}</h2>`;
+        ramos.filter(r => r.nombre.toLowerCase().includes(filtro)).forEach(r => {
+          div.innerHTML += `<div class="asignatura"><strong>${r.nombre}</strong> - ${r.horas} hrs - ${r.tipo}<br><em>Prerrequisitos:</em> ${r.prerequisitos}</div>`;
+        });
+        contenedor.appendChild(div);
+      }
+    }
+
+    document.getElementById('buscador').addEventListener('input', e => {
+      renderMalla(e.target.value.toLowerCase());
+    });
+
+    renderMalla();
+  </script>
+</body>
+</html>
